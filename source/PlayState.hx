@@ -285,9 +285,9 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			case 'chill':
 				curStage = 'mightyBG';
-				var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic('mightymod/mightyBG');
+				var bg:FlxSprite = new FlxSprite(-250, -25).loadGraphic(Paths.image('mightymod/mightyBG'));
 				add(bg);
-				bg.scrollFactor.set(0.1, 0.1);
+				bg.scrollFactor.set(0.4, 0.7);
 				bg.active = false;
 				bg.updateHitbox();
 		}
@@ -297,9 +297,9 @@ class PlayState extends MusicBeatState
 			case 'chill':
 			{
 				curStage = 'mightyBG';
-				var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic('mightymod/mightyBG');
+				var bg:FlxSprite = new FlxSprite(-250, -25).loadGraphic(Paths.image('mightymod/mightyBG'));
 				add(bg);
-				bg.scrollFactor.set(0.1, 0.1);
+				bg.scrollFactor.set(0.4, 0.7);
 				bg.active = false;
 				bg.updateHitbox();
 			} 
@@ -695,6 +695,10 @@ class PlayState extends MusicBeatState
 			case 'spirit':
 				dad.x -= 150;
 				dad.y += 100;
+				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
+			case 'mighty':
+				dad.x -= 150;
+				dad.y += 360;
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
 		}
 
