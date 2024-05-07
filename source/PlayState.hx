@@ -845,6 +845,14 @@ class PlayState extends MusicBeatState
 		crystalEngineWatermark.scrollFactor.set();
 		add(crystalEngineWatermark);
 
+		iconP1 = new HealthIcon(SONG.player1, true);
+		iconP1.y = healthBar.y - (iconP1.height / 2);
+		add(iconP1);
+
+		iconP2 = new HealthIcon(SONG.player2, false);
+		iconP2.y = healthBar.y - (iconP2.height / 2);
+		add(iconP2);
+
 		npsTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y - 87, 0, "", 20);
 		npsTxt.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		npsTxt.scrollFactor.set();
@@ -890,14 +898,6 @@ class PlayState extends MusicBeatState
 			{
 				add(replayTxt);
 			}
-
-		iconP1 = new HealthIcon(SONG.player1, true);
-		iconP1.y = healthBar.y - (iconP1.height / 2);
-		add(iconP1);
-
-		iconP2 = new HealthIcon(SONG.player2, false);
-		iconP2.y = healthBar.y - (iconP2.height / 2);
-		add(iconP2);
 
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -1567,7 +1567,7 @@ class PlayState extends MusicBeatState
 			accuracy >= 40, // D
 			accuracy >= 5,
 			accuracy >= 1,
-			accuracy <= 1,
+			accuracy <= 1
 		];
 
 		for(i in 0...wifeConditions.length)
@@ -1592,7 +1592,7 @@ class PlayState extends MusicBeatState
 					case 6:
 						ranking += " Not Perfect";
 					case 7:
-						ranking += " Doing Great";
+						ranking += " Not Perfect";
 					case 8:
 						ranking += " Doing Great";
 					case 9:
@@ -1610,13 +1610,13 @@ class PlayState extends MusicBeatState
 					case 15:
 						ranking += " You got the spirit";
 					case 16:
-						ranking += " Practice yourself"
+						ranking += " Practice yourself";
 					case 17:
-						ranking += " HOW THE FU-"
+						ranking += " HOW THE FU-";
 					case 18:
-						ranking += "N/A... I think"
+						ranking += "N/A... I think";
 					case 19:
-						ranking += "You are not made for this"
+						ranking += "You are not made for this";
 				}
 				break;
 			}
