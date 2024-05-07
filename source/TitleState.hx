@@ -418,6 +418,11 @@ class TitleState extends MusicBeatState
 
 		//FlxG.log.add(curBeat);
 		
+		if(!skippedIntro) {
+			FlxTween.tween(FlxG.camera, {zoom:1.05}, 0.3, {ease: FlxEase.expoInOut, type: BACKWARD});
+		}else {
+			FlxTween.tween(FlxG.camera, {zoom:1});
+		}
 		switch (curBeat)
 		{
 			case 1:
