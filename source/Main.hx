@@ -75,9 +75,9 @@ class Main extends Sprite
 		initialState = TitleState;
 		#end
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
-
-		addChild(game);
+		addChild(new FlxGame(gameWidth, gameHeight, initialState, 
+			#if (flixel < "5.0.0") zoom, #end
+			framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
