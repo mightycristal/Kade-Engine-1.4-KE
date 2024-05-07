@@ -283,10 +283,26 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('roses/rosesDialogue'));
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
+			case 'chill':
+				curStage = 'mightyBG';
+				var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic('mightymod/mightyBG');
+				add(bg);
+				bg.scrollFactor.set(0.1, 0.1);
+				bg.active = false;
+				bg.updateHitbox();
 		}
 
 		switch(SONG.song.toLowerCase())
 		{
+			case 'chill':
+			{
+				curStage = 'mightyBG';
+				var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic('mightymod/mightyBG');
+				add(bg);
+				bg.scrollFactor.set(0.1, 0.1);
+				bg.active = false;
+				bg.updateHitbox();
+			} 
 			case 'spookeez' | 'monster' | 'south': 
 			{
 				curStage = 'spooky';
