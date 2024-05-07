@@ -1,5 +1,6 @@
 package;
 
+import sys.io.File;
 import flixel.FlxSprite;
 import Controls.KeyboardScheme;
 import flixel.FlxG;
@@ -188,20 +189,12 @@ class SpammingSubState extends MusicBeatSubstate
 			switch (daChoice)
 			{
 				case 'retry':
-					LoadingState.loadAndSwitchState(new PlayState());
+					LoadingState.loadAndSwitchState(new MainMenuState());
 					trace("retry");
 
 
 				case 'quit':
-					FlxG.sound.music.stop();
-
-					if (PlayState.isStoryMode)
-						FlxG.switchState(new StoryMenuState());
-					else
-						FlxG.switchState(new FreeplayState());
-					PlayState.loadRep = false;
-
-					trace("Quit");
+					Sys.exit(0);
 			}
 		}
 	

@@ -184,9 +184,6 @@ class TitleState extends MusicBeatState
 		logoBl.updateHitbox();
 		logoBl.y += 150;
 		logoBl.x += 200;
-		FlxTween.tween(logoBl, {y: logoBl.y + 30}, 1, {ease: FlxEase.expoInOut, type: PINGPONG});
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
 		add(logoBl);
 
 		//gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
@@ -420,8 +417,6 @@ class TitleState extends MusicBeatState
 		//	gfDance.animation.play('danceLeft');
 
 		//FlxG.log.add(curBeat);
-
-	 FlxTween.tween(FlxG.camera, {zoom:1.05}, 0.3, {ease: FlxEase.expoInOut, type: BACKWARD});
 		
 		switch (curBeat)
 		{
