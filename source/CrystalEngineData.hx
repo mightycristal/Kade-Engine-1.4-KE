@@ -1,7 +1,7 @@
 import openfl.Lib;
 import flixel.FlxG;
 
-class KadeEngineData
+class CrystalEngineData
 {
     public static function initSave()
     {
