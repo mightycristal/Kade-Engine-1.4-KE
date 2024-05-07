@@ -146,6 +146,7 @@ class PlayState extends MusicBeatState
 	var upperBoppers:FlxSprite;
 	var bottomBoppers:FlxSprite;
 	var santa:FlxSprite;
+	var crystalEngineWatermark:FlxText;
 
 	var fc:Bool = true;
 
@@ -154,11 +155,16 @@ class PlayState extends MusicBeatState
 
 	var talking:Bool = true;
 	var songScore:Int = 0;
+	var npsTxt:FlxText;
 	var scoreTxt:FlxText;
+	public var missesTxt:FlxText;
+	public var accuracyTxt:FlxText;
+	public var comboTxt:FlxText;
+	var ratingTxt:FlxText;
 	var scoreTxTMovement:FlxTween;
 	var replayTxt:FlxText;
 
-	
+
 	public static var campaignScore:Int = 0;
 
 	var defaultCamZoom:Float = 1.05;
@@ -837,22 +843,49 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 
 		// Add Kade Engine watermark
-		var kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + " - Crystal Engine (KE 1.4.2) " + MainMenuState.crystalEngineVer + " - " + (FlxG.save.data.etternaMode ? "E.Mode" : "FNF"), 16);
-		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
-		kadeEngineWatermark.scrollFactor.set();
-		add(kadeEngineWatermark);
 
-		if (FlxG.save.data.downscroll)
-			kadeEngineWatermark.y = FlxG.height * 0.9 + 45;
+		crystalEngineWatermark = new FlxText(FlxG.width / 2 - 235, 0, 0, "", 20);
+		crystalEngineWatermark.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		crystalEngineWatermark.scrollFactor.set();
+		add(crystalEngineWatermark);
 
-		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
+		npsTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y - 87, 0, "", 20);
+		npsTxt.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		npsTxt.scrollFactor.set();
+		npsTxt.x = 5;
+		add(npsTxt);
+
+		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y - 62, 0, "", 20);
 		if (!FlxG.save.data.accuracyDisplay)
 			scoreTxt.x = healthBarBG.x + healthBarBG.width / 2;
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
-		if (offsetTesting)
-			scoreTxt.x += 300;
+			scoreTxt.x = 5;
 		add(scoreTxt);
+
+		missesTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y - 37, 0, "", 20);
+		missesTxt.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		missesTxt.scrollFactor.set();
+		missesTxt.x = 5;
+		add(missesTxt);
+
+		accuracyTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y - 12, 0, "", 20);
+		accuracyTxt.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		accuracyTxt.scrollFactor.set();
+		accuracyTxt.x = 5;
+		add(accuracyTxt);
+
+		comboTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 13, 0, "", 20);
+		comboTxt.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		comboTxt.scrollFactor.set();
+		comboTxt.x = 5;
+		add(comboTxt);
+
+		ratingTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 38, 0, "", 20);
+		ratingTxt.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		ratingTxt.scrollFactor.set();
+		ratingTxt.x = 5;
+		add(ratingTxt);
 
 		replayTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (FlxG.save.data.downscroll ? 100 : -100), 0, "REPLAY", 20);
 		replayTxt.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
@@ -876,14 +909,18 @@ class PlayState extends MusicBeatState
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
+		npsTxt.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		missesTxt.cameras = [camHUD];
+		accuracyTxt.cameras = [camHUD];
+		comboTxt.cameras = [camHUD];
+		ratingTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 		if (FlxG.save.data.songPosition)
 		{
 			songPosBG.cameras = [camHUD];
 			songPosBar.cameras = [camHUD];
 		}
-		kadeEngineWatermark.cameras = [camHUD];
 		if (loadRep)
 			replayTxt.cameras = [camHUD];
 		// if (SONG.song == 'South')
@@ -1502,13 +1539,13 @@ class PlayState extends MusicBeatState
 		var ranking:String = "N/A";
 
 		if (misses == 0 && bads == 0 && shits == 0 && goods == 0) // Marvelous (SICK) Full Combo
-			ranking = "(MFC)";
+			ranking = "(Perfect)";
 		else if (misses == 0 && bads == 0 && shits == 0 && goods >= 1) // Good Full Combo (Nothing but Goods & Sicks)
-			ranking = "(GFC)";
+			ranking = "(Great)";
 		else if (misses == 0) // Regular FC
-			ranking = "(FC)";
+			ranking = "(Good)";
 		else if (misses < 10) // Single Digit Combo Breaks
-			ranking = "(SDCB)";
+			ranking = "(Alright)";
 		else
 			ranking = "(Clear)";
 
@@ -1529,8 +1566,12 @@ class PlayState extends MusicBeatState
 			accuracy >= 85, // A.
 			accuracy >= 80, // A
 			accuracy >= 70, // B
+			accuracy >= 69,
 			accuracy >= 60, // C
-			accuracy < 60 // D
+			accuracy >= 40, // D
+			accuracy >= 5,
+			accuracy >= 1,
+			accuracy <= 1,
 		];
 
 		for(i in 0...wifeConditions.length)
@@ -1541,37 +1582,45 @@ class PlayState extends MusicBeatState
 				switch(i)
 				{
 					case 0:
-						ranking += " AAAAA";
+						ranking += "";
 					case 1:
-						ranking += " AAAA:";
+						ranking += " Not Perfect";
 					case 2:
-						ranking += " AAAA.";
+						ranking += " Not Perfect";
 					case 3:
-						ranking += " AAAA";
+						ranking += " Not Perfect";
 					case 4:
-						ranking += " AAA:";
+						ranking += " Not Perfect";
 					case 5:
-						ranking += " AAA.";
+						ranking += " Not Perfect";
 					case 6:
-						ranking += " AAA";
+						ranking += " Not Perfect";
 					case 7:
-						ranking += " AA:";
+						ranking += " Doing Great";
 					case 8:
-						ranking += " AA.";
+						ranking += " Doing Great";
 					case 9:
-						ranking += " AA";
+						ranking += " Doing Great";
 					case 10:
-						ranking += " A:";
+						ranking += " Doing Great";
 					case 11:
-						ranking += " A.";
+						ranking += " Doing Good";
 					case 12:
-						ranking += " A";
+						ranking += " Doing Good";
 					case 13:
-						ranking += " B";
+						ranking += " You are doing alright";
 					case 14:
-						ranking += " C";
+						ranking += " Keep trying!";
 					case 15:
-						ranking += " D";
+						ranking += " You got the spirit";
+					case 16:
+						ranking += " Practice yourself"
+					case 17:
+						ranking += " HOW THE FU-"
+					case 18:
+						ranking += "N/A... I think"
+					case 19:
+						ranking += "You are not made for this"
 				}
 				break;
 			}
@@ -1636,7 +1685,7 @@ class PlayState extends MusicBeatState
 		{
 			if (FlxG.save.data.accuracyDisplay)
 			{
-				scoreTxt.text = (FlxG.save.data.npsDisplay ? "NPS: " + nps + " | " : "") + "Score:" + (FlxG.save.data.etternaMode ? Math.max(0,etternaModeScore) + " (" + songScore + ")" : "" + songScore) + " | Combo Breaks:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% | " + generateRanking();
+				scoreTxt.text = "Score:" + songScore;
 			}
 			else
 			{
@@ -1648,6 +1697,17 @@ class PlayState extends MusicBeatState
 			scoreTxt.text = "Suggested Offset: " + offsetTest;
 
 		}
+
+    crystalEngineWatermark.text = 'CE 2.0';
+		missesTxt.text = 'Misses: ' + misses;
+		accuracyTxt.text = 'Accuracy: ' + truncateFloat(accuracy, 2) + '%';
+		comboTxt.text = 'Combo: ' + combo;
+		ratingTxt.text = generateRanking();
+
+		if(FlxG.save.data.npsDisplay) {
+			npsTxt.text = 'NPS: ' + nps;
+		}
+
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
@@ -2144,17 +2204,6 @@ class PlayState extends MusicBeatState
 						health += 0.1;
 					sicks++;
 			}
-
-			if(scoreTxTMovement != null) {
-				scoreTxTMovement.cancel();
-			}
-			scoreTxt.scale.x = 1.05;
-			scoreTxt.scale.y = 1.05;
-			scoreTxTMovement = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.25, {
-				onComplete: function(twn:FlxTween) {
-					scoreTxTMovement = null;
-				}
-			});
 
 			if (FlxG.save.data.etternaMode)
 				etternaModeScore += Math.round(score / wife);
