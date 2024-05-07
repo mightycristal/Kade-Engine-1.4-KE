@@ -1535,13 +1535,13 @@ class PlayState extends MusicBeatState
 		var ranking:String = "N/A";
 
 		if (misses == 0 && bads == 0 && shits == 0 && goods == 0) // Marvelous (SICK) Full Combo
-			ranking = "(MFC)";
+			ranking = "(Perfect)";
 		else if (misses == 0 && bads == 0 && shits == 0 && goods >= 1) // Good Full Combo (Nothing but Goods & Sicks)
-			ranking = "(GFC)";
+			ranking = "(Great)";
 		else if (misses == 0) // Regular FC
-			ranking = "(FC)";
+			ranking = "(Good)";
 		else if (misses < 10) // Single Digit Combo Breaks
-			ranking = "(SDCB)";
+			ranking = "(Alright)";
 		else
 			ranking = "(Clear)";
 
@@ -1562,8 +1562,12 @@ class PlayState extends MusicBeatState
 			accuracy >= 85, // A.
 			accuracy >= 80, // A
 			accuracy >= 70, // B
+			accuracy >= 69,
 			accuracy >= 60, // C
-			accuracy < 60 // D
+			accuracy >= 40, // D
+			accuracy >= 5,
+			accuracy >= 1,
+			accuracy <= 1,
 		];
 
 		for(i in 0...wifeConditions.length)
@@ -1574,37 +1578,45 @@ class PlayState extends MusicBeatState
 				switch(i)
 				{
 					case 0:
-						ranking += " AAAAA";
+						ranking += "";
 					case 1:
-						ranking += " AAAA:";
+						ranking += " Not Perfect";
 					case 2:
-						ranking += " AAAA.";
+						ranking += " Not Perfect";
 					case 3:
-						ranking += " AAAA";
+						ranking += " Not Perfect";
 					case 4:
-						ranking += " AAA:";
+						ranking += " Not Perfect";
 					case 5:
-						ranking += " AAA.";
+						ranking += " Not Perfect";
 					case 6:
-						ranking += " AAA";
+						ranking += " Not Perfect";
 					case 7:
-						ranking += " AA:";
+						ranking += " Doing Great";
 					case 8:
-						ranking += " AA.";
+						ranking += " Doing Great";
 					case 9:
-						ranking += " AA";
+						ranking += " Doing Great";
 					case 10:
-						ranking += " A:";
+						ranking += " Doing Great";
 					case 11:
-						ranking += " A.";
+						ranking += " Doing Good";
 					case 12:
-						ranking += " A";
+						ranking += " Doing Good";
 					case 13:
-						ranking += " B";
+						ranking += " You are doing alright";
 					case 14:
-						ranking += " C";
+						ranking += " Keep trying!";
 					case 15:
-						ranking += " D";
+						ranking += " You got the spirit";
+					case 16:
+						ranking += " Practice yourself"
+					case 17:
+						ranking += " HOW THE FU-"
+					case 18:
+						ranking += "N/A... I think"
+					case 19:
+						ranking += "You are not made for this"
 				}
 				break;
 			}
