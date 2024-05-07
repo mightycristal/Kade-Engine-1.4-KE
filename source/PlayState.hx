@@ -155,6 +155,7 @@ class PlayState extends MusicBeatState
 	var talking:Bool = true;
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
+	var scoreTxTMovement:FlxTween;
 	var replayTxt:FlxText;
 
 	
@@ -2129,6 +2130,17 @@ class PlayState extends MusicBeatState
 					sicks++;
 			}
 
+			if(scoreTxTMovement != null) {
+				scoreTxTMovement.cancel();
+			}
+			scoreTxt.scale.x = 1.05;
+			scoreTxt.scale.y = 1.05;
+			scoreTxTMovement = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.25, {
+				onComplete: function(twn:FlxTween) {
+					scoreTxTMovement = null;
+				}
+			});
+
 			if (FlxG.save.data.etternaMode)
 				etternaModeScore += Math.round(score / wife);
 
@@ -2863,24 +2875,27 @@ class PlayState extends MusicBeatState
 
 					// ANTI MASH CODE FOR THE BOYS
 
-						if (mashViolations > 4)
-						{
-							trace('mash violations ' + mashViolations);
-							scoreTxt.color = FlxColor.RED;
-							noteMiss(0,null);
-							trace('Warned For Spamming');
-							//do the spamming state and spamming assets tommorow or smth
-
-							// basically kill/kick bf for spamming, make a menu for that, and send to main menu
-							// open KickedMenuu.hx make it work like MainMenuState.hx mixed with GameoverState.hx
-							// Minecraft background with text and buttons to go back
-							mashViolations++;
-						}
-						else
-							mashViolations++;
+					if (mashing <= getKeyPresses(note) && mashViolations < 1)
+					{
+						mashViolations++;
+						
+						goodNoteHit(note, (mashing <= getKeyPresses(note)));
+					}
+					else
+					{
+						// this is bad but fuck you
+						playerStrums.members[0].animation.play('static');
+						playerStrums.members[1].animation.play('static');
+						playerStrums.members[2].animation.play('static');
+						playerStrums.members[3].animation.play('static');
+						health -= 0.2;
+						trace('mash ' + mashing);
 					}
 
+					if (mashing != 0)
+						mashing = 0;
 				}
+		}
 
 		var nps:Int = 0;
 
