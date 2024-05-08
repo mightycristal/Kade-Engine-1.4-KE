@@ -381,6 +381,8 @@ class MainMenuState extends MusicBeatState
 						});
 				}
 
+				openfl.Lib.application.window.title = "Friday Night Funkin' Vs Mighty";
+
 		if (FlxG.keys.justPressed.Y)
 			if (pressCount == 5)
 				{

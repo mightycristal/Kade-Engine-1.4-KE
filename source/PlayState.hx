@@ -61,6 +61,7 @@ class PlayState extends MusicBeatState
 	public static var sicks:Int = 0;
 
 	public static var songPosBG:FlxSprite;
+	public static var songPosXP:FlxSprite;
 	public static var songPosBar:FlxBar;
 
 	public static var rep:Replay;
@@ -113,6 +114,7 @@ class PlayState extends MusicBeatState
 
 
 	private var healthBarBG:FlxSprite;
+	private var healthBarBGG:FlxSprite;
 	private var healthBar:FlxBar;
 	private var songPositionBar:Float = 0;
 	
@@ -135,6 +137,8 @@ class PlayState extends MusicBeatState
 	var halloweenBG:FlxSprite;
 	var isHalloween:Bool = false;
 
+	var creator:String;
+
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
@@ -149,6 +153,8 @@ class PlayState extends MusicBeatState
 	var crystalEngineWatermark:FlxText;
 
 	var fc:Bool = true;
+
+	var hotbar:FlxSprite;
 
 	var bgGirls:BackgroundGirls;
 	var wiggleShit:WiggleEffect = new WiggleEffect();
@@ -666,6 +672,34 @@ class PlayState extends MusicBeatState
 
 		var camPos:FlxPoint = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
+		hotbar = new FlxSprite();
+		hotbar.frames = Paths.getSparrowAtlas('hotbar1');
+		hotbar.animation.addByPrefix('Mic', 'MicSelALL', 24, false);
+		hotbar.animation.addByPrefix('Shield', 'ShieldSelALL', 24, false);
+		hotbar.animation.addByPrefix('Potion', 'PotionSelALL', 24, false);
+		hotbar.animation.addByPrefix('MicNoPotion', 'MicSelNoPotion', 24, false);
+		hotbar.animation.addByPrefix('ShieldNoPotion', 'ShieldSelNoPotion', 24, false);
+		hotbar.animation.addByPrefix('PotionNoPotion', 'EmtpySelNoPotion', 24, false);
+
+		//FOR MOSTLY ALL SONGS
+		hotbar.animation.addByPrefix('MicNoShield', 'MicSelNoShield', 24, false);
+		hotbar.animation.addByPrefix('ShieldNoShield', 'EmptyNoShield', 24, false);
+		hotbar.animation.addByPrefix('PotionNoShield', 'PotionSelNoShield', 24, false);
+
+		//FOR MOSTLY ALL SONGS AND AFTER USING POTION
+		hotbar.animation.addByPrefix('MicNoSP', 'MicSelOnly', 24, false);
+		hotbar.animation.addByPrefix('ShieldNoSP', 'EmptySNoSP', 24, false);
+		hotbar.animation.addByPrefix('PotionNoSP', 'EmptyPNoSP', 24, false);
+		
+		hotbar.antialiasing = false;
+		hotbar.setGraphicSize(Std.int(hotbar.width * 3));
+		hotbar.screenCenter();
+		hotbar.x += 575;
+		hotbar.updateHitbox();
+		hotbar.scrollFactor.set();
+		hotbar.animation.play('MicNoShield', false);
+		add(hotbar);
+
 		switch (SONG.player2)
 		{
 			case 'gf':
@@ -816,8 +850,16 @@ class PlayState extends MusicBeatState
 				songPosBar = new FlxBar(songPosBG.x + 4, songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 8), Std.int(songPosBG.height - 8), this,
 					'songPositionBar', 0, 90000);
 				songPosBar.scrollFactor.set();
-				songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
+				songPosBar.createFilledBar(FlxColor.fromString('#3D3540'), FlxColor.fromString('#03AAF9'));
 				add(songPosBar);
+
+				songPosXP = new FlxSprite(0, 25).loadGraphic(Paths.image('healthBar'));
+				if (FlxG.save.data.downscroll)
+					songPosXP.y = FlxG.height * 0.9 + 45; 
+				songPosXP.screenCenter(X);
+				songPosXP.alpha = 0.65;
+				songPosXP.scrollFactor.set();
+				add(songPosXP);
 	
 				var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - 20,songPosBG.y,0,SONG.song, 16);
 				if (FlxG.save.data.downscroll)
@@ -828,19 +870,31 @@ class PlayState extends MusicBeatState
 				songName.cameras = [camHUD];
 			}
 
-		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+		healthBarBGG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBarBGG'));
 		if (FlxG.save.data.downscroll)
-			healthBarBG.y = 50;
-		healthBarBG.screenCenter(X);
-		healthBarBG.scrollFactor.set();
-		add(healthBarBG);
+			healthBarBGG.y = 50;
+		healthBarBGG.screenCenter(X);
+		healthBarBGG.scrollFactor.set();
 
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		add(healthBarBGG);
+
+
+		//HEALTH BAR SHIT -- COLORS YK
+		healthBar = new FlxBar(healthBarBGG.x + 4, healthBarBGG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBGG.width - 8), Std.int(healthBarBGG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		// healthBar
 		add(healthBar);
+
+		//XP BAR SHIT
+		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+		if (FlxG.save.data.downscroll)
+			healthBarBG.y = 50;
+		healthBarBG.screenCenter(X);
+		healthBarBG.alpha = 0.65;
+		healthBarBG.scrollFactor.set();
+		add(healthBarBG);
 
 		// Add Kade Engine watermark
 
@@ -907,6 +961,7 @@ class PlayState extends MusicBeatState
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
+		healthBarBGG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		npsTxt.cameras = [camHUD];
@@ -916,10 +971,12 @@ class PlayState extends MusicBeatState
 		comboTxt.cameras = [camHUD];
 		ratingTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+		hotbar.cameras = [camHUD];
 		if (FlxG.save.data.songPosition)
 		{
 			songPosBG.cameras = [camHUD];
 			songPosBar.cameras = [camHUD];
+			songPosXP.cameras = [camHUD];
 		}
 		if (loadRep)
 			replayTxt.cameras = [camHUD];
@@ -1014,6 +1071,11 @@ class PlayState extends MusicBeatState
 				add(red);
 			}
 		}
+
+		if (SONG.song.toLowerCase() == 'chill')
+			{
+				creator == 'B0YFR1END and Mighty';
+			}
 
 		new FlxTimer().start(0.3, function(tmr:FlxTimer)
 		{
@@ -1211,9 +1273,10 @@ class PlayState extends MusicBeatState
 			{
 				remove(songPosBG);
 				remove(songPosBar);
+				remove(songPosXP);
 				remove(songName);
 
-				songPosBG = new FlxSprite(0, 10).loadGraphic(Paths.image('healthBar'));
+				songPosBG = new FlxSprite(0, 25).loadGraphic(Paths.image('healthBarBGG'));
 				if (FlxG.save.data.downscroll)
 					songPosBG.y = FlxG.height * 0.9 + 45; 
 				songPosBG.screenCenter(X);
@@ -1226,6 +1289,14 @@ class PlayState extends MusicBeatState
 				songPosBar.scrollFactor.set();
 				songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
 				add(songPosBar);
+
+				songPosXP = new FlxSprite(0, 25).loadGraphic(Paths.image('healthBar'));
+				if (FlxG.save.data.downscroll)
+					songPosXP.y = songPosBG.y; 
+				songPosXP.screenCenter(X);
+				songPosXP.alpha = 0.65;
+				songPosXP.scrollFactor.set();
+				add(songPosXP);
 	
 				var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - 20,songPosBG.y,0,SONG.song, 16);
 				if (FlxG.save.data.downscroll)
@@ -1639,6 +1710,19 @@ class PlayState extends MusicBeatState
 		#if !debug
 		perfectMode = false;
 		#end
+
+		if (FlxG.keys.justPressed.SPACE)
+			{
+				boyfriend.playAnim('dodge', true);
+					hotbar.animation.play('Shield', true);
+				new FlxTimer().start(0.2, function(tmr:FlxTimer)
+				{
+						hotbar.animation.play('Mic', true);
+				});
+			}
+
+
+			openfl.Lib.application.window.title = 'CE 2.0 | FNF Vs Mighty | Now Playing: ' + curSong + ' by ' + creator;
 
 		if (currentFrames == FlxG.save.data.fpsCap)
 		{
