@@ -1584,17 +1584,17 @@ class PlayState extends MusicBeatState
 					case 0:
 						ranking += "";
 					case 1:
-						ranking += " Not Perfect";
+						ranking += "";
 					case 2:
-						ranking += " Not Perfect";
+						ranking += "";
 					case 3:
-						ranking += " Not Perfect";
+						ranking += "";
 					case 4:
-						ranking += " Not Perfect";
+						ranking += "";
 					case 5:
-						ranking += " Not Perfect";
+						ranking += "";
 					case 6:
-						ranking += " Not Perfect";
+						ranking += "";
 					case 7:
 						ranking += " Not Perfect";
 					case 8:
