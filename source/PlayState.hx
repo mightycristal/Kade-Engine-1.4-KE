@@ -58,10 +58,7 @@ class PlayState extends MusicBeatState
 	public static var shits:Int = 0;
 	public static var bads:Int = 0;
 	public static var goods:Int = 0;
-	public static var sicks:Int = 0;
-
-	public static var songPosBG:FlxSprite;
-	public static var songPosXP:FlxSprite;
+	public static 	public static var songPosXP:FlxSprite;
 	public static var songPosBar:FlxBar;
 
 	public static var rep:Replay;
@@ -189,7 +186,9 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 
-		if (FlxG.save.data.etternaMode)
+		if (FlxG.save.dat
+
+	a.etternaMode)
 			Conductor.safeFrames = 5; // 116ms hit window (j3-4)
 		else
 			Conductor.safeFrames = 10; // 166ms hit window (j1)
@@ -209,7 +208,8 @@ class PlayState extends MusicBeatState
 		repReleases = 0;
 
 		#if desktop
-		// Making difficulty text for Discord Rich Presence.
+		// Making difficulty text for Discord Rich 
+Presence.
 		switch (storyDifficulty)
 		{
 			case 0:
@@ -1935,6 +1935,65 @@ class PlayState extends MusicBeatState
 						camFollow.x = boyfriend.getMidpoint().x - 200;
 						camFollow.y = boyfriend.getMidpoint().y - 200;
 					case 'schoolEvil':
+
+			}
+
+			// Conductor.lastSongPos = FlxG.sound.music.time;
+		}
+
+		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
+		{
+			if (curBeat % 4 == 0)
+			{
+				// trace(PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
+			}
+
+			if (camFollow.x != dad.getMidpoint().x + 300 && !PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection)
+			{
+				camFollow.setPosition(dad.getMidpoint().x + 300, dad.getMidpoint().y - 100);
+				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
+
+				switch (dad.curCharacter)
+				{
+					case 'mom':
+						camFollow.y = dad.getMidpoint().y;
+					case 'senpai':
+						camFollow.y = dad.getMidpoint().y - 430;
+						camFollow.x = dad.getMidpoint().x - 100;
+					case 'senpai-angry':
+						camFollow.y = dad.getMidpoint().y - 430;
+						camFollow.x = dad.getMidpoint().x - 100;
+					case 'mighty':
+						camFollow.y = dad.getMidpoint().y - 325;
+						camFollow.x = dad.getMidpoint().x - 150;
+				}
+
+				if (dad.curCharacter == 'mom')
+					vocals.volume = 1;
+
+				if (SONG.song.toLowerCase() == 'tutorial')
+				{
+					tweenCamIn();
+				}
+			}
+
+			if (PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100)
+			{
+				camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+
+				switch (curStage)
+				{
+					case 'limo':
+						camFollow.x = boyfriend.getMidpoint().x - 300;
+					case 'mall':
+						camFollow.y = boyfriend.getMidpoint().y - 200;
+					case 'school':
+						camFollow.x = boyfriend.getMidpoint().x - 200;
+						camFollow.y = boyfriend.getMidpoint().y - 200;
+					case 'schoolEvil':
+						camFollow.x = boyfriend.getMidpoint().x - 200;
+						camFollow.y = boyfriend.getMidpoint().y - 200;
+					case 'mightyBG':
 						camFollow.x = boyfriend.getMidpoint().x - 200;
 						camFollow.y = boyfriend.getMidpoint().y - 200;
 				}
